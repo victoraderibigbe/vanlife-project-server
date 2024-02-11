@@ -22,7 +22,11 @@ const login = (req, res) => {
     .then((user) => {
       console.log(user);
       if (user) {
-        res.send({ status: true, message: "Login successful!", user_id: user._id });
+        res.send({
+          status: true,
+          message: "Login successful!",
+          user_id: user._id,
+        });
       } else {
         res.send({ status: false, message: "Incorrect email or password!" });
       }
@@ -32,4 +36,19 @@ const login = (req, res) => {
     });
 };
 
-module.exports = { register, login };
+const getProfile = (req, res) => {
+  userModel
+    .findOne({ user_id: req.body.user_id })
+    .then((user) => {
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+      res.status(200).json(user);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ message: 'Internal server error' });
+    });
+};
+
+module.exports = { register, login, getProfile };
