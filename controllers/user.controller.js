@@ -22,7 +22,7 @@ const login = (req, res) => {
     .then((user) => {
       console.log(user);
       if (user) {
-        res.send({ status: true, message: "Login successful!" });
+        res.send({ status: true, message: "Login successful!", user_id: user._id });
       } else {
         res.send({ status: false, message: "Incorrect email or password!" });
       }
