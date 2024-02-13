@@ -20,35 +20,15 @@ const login = (req, res) => {
   userModel
     .findOne({ email: req.body.email, password: req.body.password })
     .then((user) => {
-      console.log(user);
-      if (user) {
-        res.send({
-          status: true,
-          message: "Login successful!",
-          user_id: user._id,
-        });
-      } else {
-        res.send({ status: false, message: "Incorrect email or password!" });
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
-
-const getProfile = (req, res) => {
-  userModel
-    .findOne({ user_id: req.body.user_id })
-    .then((user) => {
       if (!user) {
-        return res.status(404).json({ message: 'User not found' });
+        return res.status(404).json({ message: "Incorrect email or password" });
       }
-      res.status(200).json(user);
+      res.status(200).json({ user, message: "Login Successful" });
     })
     .catch((err) => {
       console.log(err);
-      res.status(500).json({ message: 'Internal server error' });
+      res.status(500).json({ message: "Internal server error" });
     });
 };
 
-module.exports = { register, login, getProfile };
+module.exports = { register, login };
