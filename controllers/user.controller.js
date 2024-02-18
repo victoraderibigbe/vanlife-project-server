@@ -15,6 +15,27 @@ const register = (req, res) => {
     });
 };
 
+const updatePassword = (req, res) => {
+  console.log(req.body);
+  const filter = { _id: req.body.userId };
+  const update = { password: req.body.newPassword };
+
+  userModel
+    .findOneAndUpdate(filter, update, { new: true })
+    .then((user) => {
+      if (!user) {
+        console.log("User not found");
+        return res.status(404).send({ message: "User not found" });
+      }
+      console.log("Password updated", user);
+      res.status(200).send({ message: "Password updated successfully", user });
+    })
+    .catch((err) => {
+      console.log("Update failed", err);
+      res.status(500).send({ message: "Password update failed" });
+    });
+};
+
 const login = (req, res) => {
   console.log(req.body);
   userModel
@@ -31,4 +52,4 @@ const login = (req, res) => {
     });
 };
 
-module.exports = { register, login };
+module.exports = { register, login, updatePassword };
